@@ -18,6 +18,7 @@
 		93FE6FA0166E996300BE484D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93FE6F9F166E996300BE484D /* Default-568h@2x.png */; };
 		93FE6FA3166E996300BE484D /* SLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FE6FA2166E996300BE484D /* SLViewController.m */; };
 		93FE6FA6166E996300BE484D /* SLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FE6FA4166E996300BE484D /* SLViewController.xib */; };
+		93FE6FAE166E997900BE484D /* SLGlowingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FE6FAD166E997900BE484D /* SLGlowingTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,8 @@
 		93FE6FA1166E996300BE484D /* SLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLViewController.h; sourceTree = "<group>"; };
 		93FE6FA2166E996300BE484D /* SLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLViewController.m; sourceTree = "<group>"; };
 		93FE6FA5166E996300BE484D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SLViewController.xib; sourceTree = "<group>"; };
+		93FE6FAC166E997900BE484D /* SLGlowingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLGlowingTextField.h; sourceTree = SOURCE_ROOT; };
+		93FE6FAD166E997900BE484D /* SLGlowingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGlowingTextField.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +86,8 @@
 		93FE6F8F166E996300BE484D /* SLGlowingTextField */ = {
 			isa = PBXGroup;
 			children = (
+				93FE6FAC166E997900BE484D /* SLGlowingTextField.h */,
+				93FE6FAD166E997900BE484D /* SLGlowingTextField.m */,
 				93FE6F98166E996300BE484D /* SLAppDelegate.h */,
 				93FE6F99166E996300BE484D /* SLAppDelegate.m */,
 				93FE6FA1166E996300BE484D /* SLViewController.h */,
@@ -177,6 +182,7 @@
 				93FE6F96166E996300BE484D /* main.m in Sources */,
 				93FE6F9A166E996300BE484D /* SLAppDelegate.m in Sources */,
 				93FE6FA3166E996300BE484D /* SLViewController.m in Sources */,
+				93FE6FAE166E997900BE484D /* SLGlowingTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
