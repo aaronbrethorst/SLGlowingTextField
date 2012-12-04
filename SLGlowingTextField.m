@@ -78,8 +78,23 @@
 
     if (result)
     {
-        self.layer.borderColor = self.layer.shadowColor;
-        self.layer.shadowOpacity = 1.f;
+        CABasicAnimation *borderColorAnimation = [CABasicAnimation animationWithKeyPath:@"borderColor"];
+        borderColorAnimation.fromValue = (id)self.layer.borderColor;
+        borderColorAnimation.toValue = (id)self.layer.shadowColor;
+
+//        CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+//        borderColorAnimation.fromValue = (id)[NSNumber numberWithFloat:0.f];
+//        borderColorAnimation.toValue = (id)[NSNumber numberWithFloat:1.f];
+
+        CAAnimationGroup *group = [CAAnimationGroup animation];
+        group.duration = 0.25;
+        group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        group.removedOnCompletion = NO;
+        group.fillMode = kCAFillModeForwards;
+        group.animations = @[borderColorAnimation];
+        //group.animations = @[borderColorAnimation, shadowOpacityAnimation];
+
+        [self.layer addAnimation:group forKey:nil];
     }
     return result;
 }

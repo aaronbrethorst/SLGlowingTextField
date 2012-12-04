@@ -19,6 +19,7 @@
 		93FE6FA3166E996300BE484D /* SLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FE6FA2166E996300BE484D /* SLViewController.m */; };
 		93FE6FA6166E996300BE484D /* SLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FE6FA4166E996300BE484D /* SLViewController.xib */; };
 		93FE6FAE166E997900BE484D /* SLGlowingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FE6FAD166E997900BE484D /* SLGlowingTextField.m */; };
+		93FE6FB0166EBA9700BE484D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93FE6FAF166EBA9700BE484D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		93FE6FA5166E996300BE484D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SLViewController.xib; sourceTree = "<group>"; };
 		93FE6FAC166E997900BE484D /* SLGlowingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLGlowingTextField.h; sourceTree = SOURCE_ROOT; };
 		93FE6FAD166E997900BE484D /* SLGlowingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGlowingTextField.m; sourceTree = SOURCE_ROOT; };
+		93FE6FAF166EBA9700BE484D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93FE6FB0166EBA9700BE484D /* QuartzCore.framework in Frameworks */,
 				93FE6F8A166E996300BE484D /* UIKit.framework in Frameworks */,
 				93FE6F8C166E996300BE484D /* Foundation.framework in Frameworks */,
 				93FE6F8E166E996300BE484D /* CoreGraphics.framework in Frameworks */,
@@ -76,6 +79,7 @@
 		93FE6F88166E996300BE484D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				93FE6FAF166EBA9700BE484D /* QuartzCore.framework */,
 				93FE6F89166E996300BE484D /* UIKit.framework */,
 				93FE6F8B166E996300BE484D /* Foundation.framework */,
 				93FE6F8D166E996300BE484D /* CoreGraphics.framework */,
