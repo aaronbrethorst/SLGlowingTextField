@@ -72,29 +72,33 @@
     [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:4.f] fill];
 }
 
+- (void)animateBorderColorFrom:(id)fromColor to:(id)toColor shadowOpacityFrom:(id)fromOpacity to:(id)toOpacity
+{
+    CABasicAnimation *borderColorAnimation = [CABasicAnimation animationWithKeyPath:@"borderColor"];
+    borderColorAnimation.fromValue = fromColor;
+    borderColorAnimation.toValue = toColor;
+
+    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+    shadowOpacityAnimation.fromValue = fromOpacity;
+    shadowOpacityAnimation.toValue = toOpacity;
+
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    group.duration = 1.0f / 3.0f;
+    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    group.removedOnCompletion = NO;
+    group.fillMode = kCAFillModeForwards;
+    group.animations = @[borderColorAnimation, shadowOpacityAnimation];
+
+    [self.layer addAnimation:group forKey:nil];
+}
+
 - (BOOL)becomeFirstResponder
 {
     BOOL result = [super becomeFirstResponder];
 
     if (result)
     {
-        CABasicAnimation *borderColorAnimation = [CABasicAnimation animationWithKeyPath:@"borderColor"];
-        borderColorAnimation.fromValue = (id)self.layer.borderColor;
-        borderColorAnimation.toValue = (id)self.layer.shadowColor;
-
-//        CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
-//        borderColorAnimation.fromValue = (id)[NSNumber numberWithFloat:0.f];
-//        borderColorAnimation.toValue = (id)[NSNumber numberWithFloat:1.f];
-
-        CAAnimationGroup *group = [CAAnimationGroup animation];
-        group.duration = 0.25;
-        group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        group.removedOnCompletion = NO;
-        group.fillMode = kCAFillModeForwards;
-        group.animations = @[borderColorAnimation];
-        //group.animations = @[borderColorAnimation, shadowOpacityAnimation];
-
-        [self.layer addAnimation:group forKey:nil];
+        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.layer.shadowColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:0.f] to:(id)[NSNumber numberWithFloat:1.f]];
     }
     return result;
 }
@@ -105,8 +109,7 @@
 
     if (result)
     {
-        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.layer.shadowOpacity = 0;
+        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)[UIColor lightGrayColor].CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
     }
     return result;
 }
