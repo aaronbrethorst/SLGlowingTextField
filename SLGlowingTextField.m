@@ -66,6 +66,7 @@
 	self = [super init];
 	if (self)
 	{
+		self.alwaysGlowing = NO;
 		[self _configureView];
 	}
 	return self;
@@ -76,6 +77,7 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+		self.alwaysGlowing = NO;
         [self _configureView];
     }
     return self;
@@ -86,6 +88,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
+		self.alwaysGlowing = NO;
         [self _configureView];
     }
     return self;
@@ -109,7 +112,7 @@
 
 - (void)setGlowingColor:(UIColor *)glowingColor
 {
-	if ([self isFirstResponder]) {
+	if ([self isFirstResponder] || self.alwaysGlowing) {
 		[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)glowingColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:1.f]];
 	}
 	
@@ -122,10 +125,21 @@
 {
 	_borderColor = borderColor;
 	
-	if (![self isFirstResponder])
+	if (![self isFirstResponder] && !self.alwaysGlowing)
 	{
 		self.layer.borderColor = self.borderColor.CGColor;
 	}
+}
+
+- (void)setAlwaysGlowing:(BOOL)alwaysGlowing
+{
+	if (_alwaysGlowing && !alwaysGlowing && ![self isFirstResponder]) {
+		[self hideGlowing];
+	} else if (!_alwaysGlowing && alwaysGlowing && ![self isFirstResponder]) {
+		[self showGlowing];
+	}
+	
+	_alwaysGlowing = alwaysGlowing;
 }
 
 - (void)setFrame:(CGRect)frame
@@ -167,9 +181,9 @@
 {
     BOOL result = [super becomeFirstResponder];
 	
-    if (result)
+    if (result && !self.alwaysGlowing)
     {
-        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.layer.shadowColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:0.f] to:(id)[NSNumber numberWithFloat:1.f]];
+        [self showGlowing];
     }
     return result;
 }
@@ -178,11 +192,21 @@
 {
     BOOL result = [super resignFirstResponder];
 	
-    if (result)
+    if (result && !self.alwaysGlowing)
     {
-        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.borderColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
+        [self hideGlowing];
     }
     return result;
+}
+
+- (void)showGlowing
+{
+	[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.layer.shadowColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:0.f] to:(id)[NSNumber numberWithFloat:1.f]];
+}
+
+- (void)hideGlowing
+{
+	[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.borderColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
 }
 
 - (CGRect)placeholderRectForBounds:(CGRect)bounds

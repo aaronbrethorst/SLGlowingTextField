@@ -18,6 +18,7 @@
 
 @interface SLGlowingTextField : UITextField
 
+@property (nonatomic, assign) BOOL alwaysGlowing;
 @property (nonatomic, strong) UIColor *borderColor;
 @property (nonatomic, strong) UIColor *glowingColor;
 
