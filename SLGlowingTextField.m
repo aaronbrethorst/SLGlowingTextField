@@ -74,6 +74,13 @@
     return self;
 }
 
+- (void)setFrame:(CGRect)frame
+{
+	[super setFrame:frame];
+	
+	[self _configureView];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
