@@ -81,6 +81,11 @@
     return self;
 }
 
+- (void)setBorderStyle:(UITextBorderStyle)borderStyle
+{
+	[super setBorderStyle:UITextBorderStyleNone];
+}
+
 - (UIColor *)backgroundColor
 {
 	return _backgroundColor;
