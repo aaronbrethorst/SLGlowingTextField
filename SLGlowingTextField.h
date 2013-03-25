@@ -18,4 +18,6 @@
 
 @interface SLGlowingTextField : UITextField
 
+@property (nonatomic, strong) UIColor *glowingColor;
+
 @end
