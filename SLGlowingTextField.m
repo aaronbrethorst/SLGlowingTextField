@@ -42,10 +42,15 @@
 		self.glowingColor = [UIColor colorWithRed:(82.f / 255.f) green:(168.f / 255.f) blue:(236.f / 255.f) alpha:0.8];
 	}
 	
+	if (!self.borderColor)
+	{
+		self.borderColor = [UIColor lightGrayColor];
+	}
+	
     self.layer.masksToBounds = NO;
     self.layer.cornerRadius = 4.f;
     self.layer.borderWidth = 1.f;
-    self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.layer.borderColor = self.borderColor.CGColor;
 	
     self.layer.shadowColor = self.glowingColor.CGColor;
     self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:4.f].CGPath;
@@ -113,6 +118,16 @@
 	self.layer.shadowColor = glowingColor.CGColor;
 }
 
+- (void)setBorderColor:(UIColor *)borderColor
+{
+	_borderColor = borderColor;
+	
+	if (![self isFirstResponder])
+	{
+		self.layer.borderColor = self.borderColor.CGColor;
+	}
+}
+
 - (void)setFrame:(CGRect)frame
 {
 	[super setFrame:frame];
@@ -165,7 +180,7 @@
 	
     if (result)
     {
-        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)[UIColor lightGrayColor].CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
+        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.borderColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
     }
     return result;
 }
