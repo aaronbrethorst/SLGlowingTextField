@@ -44,6 +44,16 @@
     self.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		[self _configureView];
+	}
+	return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
