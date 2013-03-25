@@ -17,8 +17,12 @@
 #import "SLGlowingTextField.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SLGlowingTextField ()
+@interface SLGlowingTextField () {
+	UIColor *_backgroundColor;
+}
+
 - (void)_configureView;
+
 @end
 
 @implementation SLGlowingTextField
@@ -27,15 +31,28 @@
 {
     self.borderStyle = UITextBorderStyleNone;
     self.clipsToBounds = YES;
-
-    self.backgroundColor = [UIColor clearColor];
-
+	
+	if (!self.backgroundColor)
+	{
+		self.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (!self.glowingColor)
+	{
+		self.glowingColor = [UIColor colorWithRed:(82.f / 255.f) green:(168.f / 255.f) blue:(236.f / 255.f) alpha:0.8];
+	}
+	
+	if (!self.borderColor)
+	{
+		self.borderColor = [UIColor lightGrayColor];
+	}
+	
     self.layer.masksToBounds = NO;
     self.layer.cornerRadius = 4.f;
     self.layer.borderWidth = 1.f;
-    self.layer.borderColor = [UIColor lightGrayColor].CGColor;
-
-    self.layer.shadowColor = [UIColor colorWithRed:(82.f / 255.f) green:(168.f / 255.f) blue:(236.f / 255.f) alpha:0.8].CGColor;
+    self.layer.borderColor = self.borderColor.CGColor;
+	
+    self.layer.shadowColor = self.glowingColor.CGColor;
     self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:4.f].CGPath;
     self.layer.shadowOpacity = 0;
     self.layer.shadowOffset = CGSizeZero;
@@ -44,11 +61,23 @@
     self.layer.rasterizationScale = [UIScreen mainScreen].scale;
 }
 
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		self.alwaysGlowing = NO;
+		[self _configureView];
+	}
+	return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self)
     {
+		self.alwaysGlowing = NO;
         [self _configureView];
     }
     return self;
@@ -59,16 +88,72 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
+		self.alwaysGlowing = NO;
         [self _configureView];
     }
     return self;
 }
 
+- (void)setBorderStyle:(UITextBorderStyle)borderStyle
+{
+	[super setBorderStyle:UITextBorderStyleNone];
+}
+
+- (UIColor *)backgroundColor
+{
+	return _backgroundColor;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+	[super setBackgroundColor:[UIColor clearColor]];
+	_backgroundColor = backgroundColor;
+}
+
+- (void)setGlowingColor:(UIColor *)glowingColor
+{
+	if ([self isFirstResponder] || self.alwaysGlowing) {
+		[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)glowingColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:1.f]];
+	}
+	
+	_glowingColor = glowingColor;
+	
+	self.layer.shadowColor = glowingColor.CGColor;
+}
+
+- (void)setBorderColor:(UIColor *)borderColor
+{
+	_borderColor = borderColor;
+	
+	if (![self isFirstResponder] && !self.alwaysGlowing)
+	{
+		self.layer.borderColor = self.borderColor.CGColor;
+	}
+}
+
+- (void)setAlwaysGlowing:(BOOL)alwaysGlowing
+{
+	if (_alwaysGlowing && !alwaysGlowing && ![self isFirstResponder]) {
+		[self hideGlowing];
+	} else if (!_alwaysGlowing && alwaysGlowing && ![self isFirstResponder]) {
+		[self showGlowing];
+	}
+	
+	_alwaysGlowing = alwaysGlowing;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+	[super setFrame:frame];
+	
+	[self _configureView];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
-
-    [[UIColor whiteColor] set];
+	
+    [_backgroundColor set];
     [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:4.f] fill];
 }
 
@@ -77,28 +162,28 @@
     CABasicAnimation *borderColorAnimation = [CABasicAnimation animationWithKeyPath:@"borderColor"];
     borderColorAnimation.fromValue = fromColor;
     borderColorAnimation.toValue = toColor;
-
+	
     CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
     shadowOpacityAnimation.fromValue = fromOpacity;
     shadowOpacityAnimation.toValue = toOpacity;
-
+	
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.duration = 1.0f / 3.0f;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     group.removedOnCompletion = NO;
     group.fillMode = kCAFillModeForwards;
     group.animations = @[borderColorAnimation, shadowOpacityAnimation];
-
+	
     [self.layer addAnimation:group forKey:nil];
 }
 
 - (BOOL)becomeFirstResponder
 {
     BOOL result = [super becomeFirstResponder];
-
-    if (result)
+	
+    if (result && !self.alwaysGlowing)
     {
-        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.layer.shadowColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:0.f] to:(id)[NSNumber numberWithFloat:1.f]];
+        [self showGlowing];
     }
     return result;
 }
@@ -106,12 +191,22 @@
 - (BOOL)resignFirstResponder
 {
     BOOL result = [super resignFirstResponder];
-
-    if (result)
+	
+    if (result && !self.alwaysGlowing)
     {
-        [self animateBorderColorFrom:(id)self.layer.borderColor to:(id)[UIColor lightGrayColor].CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
+        [self hideGlowing];
     }
     return result;
+}
+
+- (void)showGlowing
+{
+	[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.layer.shadowColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:0.f] to:(id)[NSNumber numberWithFloat:1.f]];
+}
+
+- (void)hideGlowing
+{
+	[self animateBorderColorFrom:(id)self.layer.borderColor to:(id)self.borderColor.CGColor shadowOpacityFrom:(id)[NSNumber numberWithFloat:1.f] to:(id)[NSNumber numberWithFloat:0.f]];
 }
 
 - (CGRect)placeholderRectForBounds:(CGRect)bounds
