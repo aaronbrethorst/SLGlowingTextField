@@ -1,7 +1,7 @@
 SLGlowingTextField
 ===
 
-This is a very simple subclass of UITextField that is designed to look like a Bootstrap input field. Add the text field, set the borderStyle to `UITextBorderStyleNone`, change the class to `SLGlowingTextField`, and away you go!
+This is a very simple subclass of UITextField that is designed to look like a Bootstrap input field. Add the text field, set the borderStyle to `UITextBorderStyleNone`, change the class to `SLGlowingTextField`, and off you go!
 
 ![screenshot](https://raw.github.com/aaronbrethorst/SLGlowingTextField/master/screenshot.png)
 
